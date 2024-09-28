@@ -70,7 +70,7 @@ const LandingPage = () => {
         <title>Maurice S. Gleiser Gherson - Portfolio</title>
         <meta name="description" content="Maurice S. Gleiser Gherson's professional portfolio" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/png" href={`${process.env.PUBLIC_URL}/img/msghs.png`} />
+        <link rel="icon" href={`${process.env.PUBLIC_URL}/msghs.png`} />
         <style>
           {`
             :root {
@@ -125,11 +125,6 @@ const LandingPage = () => {
             h1, h2 {
                 font-size: 48px;
                 margin-bottom: 30px;
-                background-color: var(--secondary-color);
-                padding: 10px 20px;
-                display: inline-block;
-                border-radius: 10px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
             p {
@@ -393,7 +388,7 @@ const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => 
         <div className="tile-container">
           <div style={{ padding: 0, overflow: 'hidden' }}>
             <img
-              src="/img/msghs.png"
+              src={`${process.env.PUBLIC_URL}/img/msghs.png`}
               alt="Maurice S. Gleiser Gherson"
               className="headshot"
               style={{
@@ -426,7 +421,7 @@ const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, setI
   return (
     <section className="section" id="skills">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 onClick={handleEasterEggClick} style={{ color: 'black', fontWeight: 'bold', cursor: 'pointer' }}>Skills</h2>
+        <h2 onClick={handleEasterEggClick} style={{ color: 'black', fontWeight: 'bold', cursor: 'pointer', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Skills</h2>
         <div className="tile-container">
           <div className="tile">
             <h3>Programming Languages</h3>
@@ -454,7 +449,7 @@ const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) 
   return (
     <section className="section" id="projects">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold' }}>Projects</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Projects</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('project1')}>
             <h3>Systems Design Capstone Project</h3>
@@ -502,7 +497,7 @@ const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }
   return (
     <section className="section" id="experience">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold' }}>Professional Experience</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Professional Experience</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('exp1')}>
             <h3>Software Implementation Engineer & Manager</h3>
@@ -553,7 +548,7 @@ const Education = ({ isActive, expandedTile, setExpandedTile, expandedTileRef })
   return (
     <section className="section" id="education">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold' }}>Education</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Education</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('edu1')}>
             <h3>M.S. in Artificial Intelligence in Business</h3>
@@ -613,7 +608,7 @@ const Contact = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) =
   return (
     <section className="section" id="contact">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold' }}>Contact Me</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Contact Me</h2>
         <p style={{ color: 'black', fontWeight: 'bold' }}>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
         <div className="tile-container">
           <div className="tile">
