@@ -627,6 +627,10 @@ const Contact = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) =
             <h3>LinkedIn</h3>
             <p><a href="https://www.linkedin.com/in/maurice-gleiser" target="_blank" rel="noopener noreferrer">maurice-gleiser</a></p>
           </div>
+          <div className="tile">
+            <h3>eCard</h3>
+            <p><a href={`${process.env.PUBLIC_URL}/maurice_gleiser.vcf`} download>Download Contact</a></p>
+          </div>
         </div>
       </div>
     </section>
