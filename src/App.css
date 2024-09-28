@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+/* Responsive styles for mobile devices */
+@media screen and (max-width: 768px) {
+  .App-logo {
+    height: 30vmin;
+  }
+
+  .App-header {
+    padding: 20px;
+    font-size: calc(8px + 2vmin);
+  }
+}
+
+/* Additional styles for smaller screens */
+@media screen and (max-width: 480px) {
+  .App-logo {
+    height: 25vmin;
+  }
+
+  .App-header {
+    padding: 15px;
+    font-size: calc(6px + 2vmin);
+  }
+}

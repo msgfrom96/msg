@@ -10,8 +10,16 @@ const LandingPage = () => {
   const expandedTileRef = useRef(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isPartyMode, setIsPartyMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     const handleScroll = () => {
       const position = window.pageYOffset;
       setScrollPosition(position);
@@ -59,11 +67,12 @@ const LandingPage = () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   return (
-    <div className={isPartyMode ? 'party-mode' : ''}>
+    <div className={`${isPartyMode ? 'party-mode' : ''} ${isMobile ? 'mobile' : ''}`}>
       <Helmet>
         <html lang="en" />
         <meta charSet="utf-8" />
@@ -247,15 +256,20 @@ const LandingPage = () => {
                 width: 100%;
                 max-width: 400px;
                 height: auto;
-                object-fit: contain;
+                object-fit: cover;
                 margin-bottom: 20px;
-                border-radius: 10px;
+                border-radius: 50%;
+                aspect-ratio: 1 / 1;
             }
 
             .headshot-container {
                 position: relative;
                 display: inline-block;
                 overflow: hidden;
+                border-radius: 50%;
+                width: 100%;
+                max-width: 400px;
+                aspect-ratio: 1 / 1;
             }
 
             .headshot-container::after {
@@ -266,7 +280,7 @@ const LandingPage = () => {
                 right: 0;
                 bottom: 0;
                 box-shadow: inset 0 0 10px 5px rgba(255, 255, 255, 0.5);
-                border-radius: 10px;
+                border-radius: 50%;
                 pointer-events: none;
             }
 
@@ -275,18 +289,42 @@ const LandingPage = () => {
                     padding: 40px 0;
                 }
                 h1, h2 {
-                    font-size: 36px;
-                    margin-bottom: 20px;
+                    font-size: 28px;
+                    margin-bottom: 15px;
                 }
                 p {
-                    font-size: 16px;
-                    margin-bottom: 20px;
+                    font-size: 14px;
+                    margin-bottom: 15px;
                 }
                 .tile-container {
                     grid-template-columns: 1fr;
                 }
-                .headshot {
-                    max-width: 300px;
+                .headshot-container {
+                    max-width: 250px;
+                }
+                .tile {
+                    padding: 15px;
+                }
+                .expanded-content {
+                    padding: 20px;
+                }
+                .close-btn {
+                    top: 10px;
+                    right: 10px;
+                    font-size: 20px;
+                }
+                .btn {
+                    padding: 8px 16px;
+                    font-size: 14px;
+                }
+                .logo {
+                    font-size: 20px;
+                }
+                header {
+                    padding: 10px 0;
+                }
+                .container {
+                    padding: 0 15px;
                 }
             }
           `}
@@ -294,13 +332,13 @@ const LandingPage = () => {
       </Helmet>
       
       <BackgroundAnimation isPartyMode={isPartyMode} />
-      <Header titlePosition={titlePosition} />
-      <About isActive={activeSection === 'about'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} />
-      <Skills isActive={activeSection === 'skills'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} setIsPartyMode={setIsPartyMode} />
-      <Projects isActive={activeSection === 'projects'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} />
-      <Experience isActive={activeSection === 'experience'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} />
-      <Education isActive={activeSection === 'education'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} />
-      <Contact isActive={activeSection === 'contact'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} />
+      <Header titlePosition={titlePosition} isMobile={isMobile} />
+      <About isActive={activeSection === 'about'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} isMobile={isMobile} />
+      <Skills isActive={activeSection === 'skills'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} setIsPartyMode={setIsPartyMode} isMobile={isMobile} />
+      <Projects isActive={activeSection === 'projects'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} isMobile={isMobile} />
+      <Experience isActive={activeSection === 'experience'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} isMobile={isMobile} />
+      <Education isActive={activeSection === 'education'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} isMobile={isMobile} />
+      <Contact isActive={activeSection === 'contact'} expandedTile={expandedTile} setExpandedTile={setExpandedTile} expandedTileRef={expandedTileRef} isMobile={isMobile} />
     </div>
   );
 };
@@ -348,7 +386,7 @@ const BackgroundAnimation = ({ isPartyMode }) => {
   return <div className={`background-animation ${isPartyMode ? 'party-mode' : ''}`}></div>;
 };
 
-const Header = ({ titlePosition }) => {
+const Header = ({ titlePosition, isMobile }) => {
   const repeatedText = "Maurice S. Gleiser Gherson • ".repeat(10);
   
   return (
@@ -361,7 +399,8 @@ const Header = ({ titlePosition }) => {
             whiteSpace: 'nowrap',
             display: 'inline-block',
             animation: 'scroll-left 120s linear infinite',
-            transform: `translateX(${-titlePosition}px)`
+            transform: `translateX(${-titlePosition}px)`,
+            fontSize: isMobile ? '18px' : '24px'
           }}>
             {repeatedText}
           </span>
@@ -381,12 +420,12 @@ const Header = ({ titlePosition }) => {
   );
 };
 
-const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => {
+const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMobile }) => {
   return (
     <section className="section" id="about">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
         <div className="tile-container">
-          <div style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="headshot-container" style={{ padding: 0, overflow: 'hidden' }}>
             <img
               src={`${process.env.PUBLIC_URL}/img/msghs.png`}
               alt="Maurice S. Gleiser Gherson"
@@ -397,14 +436,14 @@ const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => 
                 width: '100%',
                 height: '100%',
                 filter: 'grayscale(100%)',
-                maskImage: 'radial-gradient(black 50%, transparent 70%)',
+                maskImage: 'radial-gradient(circle, black 50%, transparent 70%)',
               }}
             />
           </div>
           <div className="tile">
-            <h1>About Me</h1>
-            <p>I'm Maurice S. Gleiser Gherson, an AI and Software Implementation Engineer with a passion for leveraging technology to drive business transformation. With a background in Industrial Engineering and a focus on AI in Business, I specialize in implementing AI-driven solutions that enhance operational efficiency and drive innovation.</p>
-            <a href="#contact" className="btn">Get in Touch</a>
+            <h1 style={{ fontSize: isMobile ? '28px' : '48px' }}>About Me</h1>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>I'm Maurice S. Gleiser Gherson, an AI and Software Implementation Engineer with a passion for leveraging technology to drive business transformation. With a background in Industrial Engineering and a focus on AI in Business, I specialize in implementing AI-driven solutions that enhance operational efficiency and drive innovation.</p>
+            <a href="#contact" className="btn" style={{ fontSize: isMobile ? '14px' : '18px' }}>Get in Touch</a>
           </div>
         </div>
       </div>
@@ -412,7 +451,7 @@ const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => 
   );
 };
 
-const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, setIsPartyMode }) => {
+const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, setIsPartyMode, isMobile }) => {
   const handleEasterEggClick = () => {
     setIsPartyMode(prevMode => !prevMode);
     window.open('https://soundcloud.com/msgfrom96', '_blank');
@@ -421,23 +460,23 @@ const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, setI
   return (
     <section className="section" id="skills">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 onClick={handleEasterEggClick} style={{ color: 'black', fontWeight: 'bold', cursor: 'pointer', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Skills</h2>
+        <h2 onClick={handleEasterEggClick} style={{ color: 'black', fontWeight: 'bold', cursor: 'pointer', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', fontSize: isMobile ? '28px' : '48px' }}>Skills</h2>
         <div className="tile-container">
           <div className="tile">
-            <h3>Programming Languages</h3>
-            <p>C#, JSON, JavaScript, Python, R, SQL</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Programming Languages</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>C#, JSON, JavaScript, Python, R, SQL</p>
           </div>
           <div className="tile">
-            <h3>Technologies</h3>
-            <p>GraphQL, APIs, .NET, Azure DevOps, Jira</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Technologies</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>GraphQL, APIs, .NET, Azure DevOps, Jira</p>
           </div>
           <div className="tile">
-            <h3>Tools</h3>
-            <p>Microsoft Office, CLI, Tableau, Adobe Suite</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Tools</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>Microsoft Office, CLI, Tableau, Adobe Suite</p>
           </div>
           <div className="tile">
-            <h3>Certifications</h3>
-            <p>Lean Six Sigma Green Belt</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Certifications</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>Lean Six Sigma Green Belt</p>
           </div>
         </div>
       </div>
@@ -445,19 +484,19 @@ const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, setI
   );
 };
 
-const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => {
+const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMobile }) => {
   return (
     <section className="section" id="projects">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Projects</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', fontSize: isMobile ? '28px' : '48px' }}>Projects</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('project1')}>
-            <h3>Systems Design Capstone Project</h3>
-            <p>Norson Alimentos - Efficiency Improvement</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Systems Design Capstone Project</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>Norson Alimentos - Efficiency Improvement</p>
           </div>
           <div className="tile" onClick={() => setExpandedTile('project2')}>
-            <h3>TAMID Consulting Group</h3>
-            <p>GenAI Start-up Consulting and Finance Portfolio Competition</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>TAMID Consulting Group</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>GenAI Start-up Consulting and Finance Portfolio Competition</p>
           </div>
         </div>
       </div>
@@ -465,9 +504,9 @@ const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) 
         <div className="expanded-tile">
           <div className="expanded-content" ref={expandedTileRef}>
             <span className="close-btn" onClick={() => setExpandedTile(null)}>✕</span>
-            <h2 style={{ color: 'black', fontWeight: 'bold' }}>Systems Design Capstone Project for Norson Alimentos</h2>
-            <p style={{ color: 'black', fontWeight: 'bold' }}>January 2021 – December 2021</p>
-            <ul style={{ color: 'black', fontWeight: 'bold' }}>
+            <h2 style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '24px' : '32px' }}>Systems Design Capstone Project for Norson Alimentos</h2>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>January 2021 – December 2021</p>
+            <ul style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>
               <li>Utilized SCADA data to identify inefficiencies</li>
               <li>Proposed a solution that could save $180,000 annually</li>
             </ul>
@@ -478,9 +517,9 @@ const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) 
         <div className="expanded-tile">
           <div className="expanded-content" ref={expandedTileRef}>
             <span className="close-btn" onClick={() => setExpandedTile(null)}>✕</span>
-            <h2 style={{ color: 'black', fontWeight: 'bold' }}>TAMID Consulting Group</h2>
-            <p style={{ color: 'black', fontWeight: 'bold' }}>August 2020 – December 2021</p>
-            <ul style={{ color: 'black', fontWeight: 'bold' }}>
+            <h2 style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '24px' : '32px' }}>TAMID Consulting Group</h2>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>August 2020 – December 2021</p>
+            <ul style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>
               <li>Engaged as a consultant for GenAI start-up Upword (formerly Erudite)</li>
               <li>Created Go-To-Market strategies</li>
               <li>Participated in the national Finance Portfolio competition</li>
@@ -493,21 +532,21 @@ const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) 
   );
 };
 
-const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => {
+const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMobile }) => {
   return (
     <section className="section" id="experience">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Professional Experience</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', fontSize: isMobile ? '28px' : '48px' }}>Professional Experience</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('exp1')}>
-            <h3>Software Implementation Engineer & Manager</h3>
-            <p>Siemens Industry Inc. (for Senseye Predictive Maintenance)</p>
-            <p>May 2023 – July 2024</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Software Implementation Engineer & Manager</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>Siemens Industry Inc. (for Senseye Predictive Maintenance)</p>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>May 2023 – July 2024</p>
           </div>
           <div className="tile" onClick={() => setExpandedTile('exp2')}>
-            <h3>Software Analyst</h3>
-            <p>Hye-Tech Network & Solutions</p>
-            <p>April 2022 – May 2023</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>Software Analyst</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>Hye-Tech Network & Solutions</p>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>April 2022 – May 2023</p>
           </div>
         </div>
       </div>
@@ -515,10 +554,10 @@ const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }
         <div className="expanded-tile">
           <div className="expanded-content" ref={expandedTileRef}>
             <span className="close-btn" onClick={() => setExpandedTile(null)}>✕</span>
-            <h2 style={{ color: 'black', fontWeight: 'bold' }}>Software Implementation Engineer & Manager</h2>
-            <p style={{ color: 'black', fontWeight: 'bold' }}>Siemens Industry Inc. (for Senseye Predictive Maintenance)</p>
-            <p style={{ color: 'black', fontWeight: 'bold' }}>May 2023 – July 2024</p>
-            <ul style={{ color: 'black', fontWeight: 'bold' }}>
+            <h2 style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '24px' : '32px' }}>Software Implementation Engineer & Manager</h2>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>Siemens Industry Inc. (for Senseye Predictive Maintenance)</p>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>May 2023 – July 2024</p>
+            <ul style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>
               <li>Led cross-functional teams to implement AI-driven predictive maintenance across several countries, reducing unplanned downtime by 80%</li>
               <li>Managed client relationships and provided tailored training across Latin America, resulting in a successful adoption of AI/ML Solutions, with $2.6 million in annual cost savings and a 20% increase in operational capacity</li>
               <li>Conducted in-depth workshops and training sessions for over 100 personnel across multiple countries, optimizing and fine-tuning AI/ML algorithms for Predictive Maintenance, and enhancing client capabilities and satisfaction</li>
@@ -530,10 +569,10 @@ const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }
         <div className="expanded-tile">
           <div className="expanded-content" ref={expandedTileRef}>
             <span className="close-btn" onClick={() => setExpandedTile(null)}>✕</span>
-            <h2 style={{ color: 'black', fontWeight: 'bold' }}>Software Analyst</h2>
-            <p style={{ color: 'black', fontWeight: 'bold' }}>Hye-Tech Network & Solutions</p>
-            <p style={{ color: 'black', fontWeight: 'bold' }}>April 2022 – May 2023</p>
-            <ul style={{ color: 'black', fontWeight: 'bold' }}>
+            <h2 style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '24px' : '32px' }}>Software Analyst</h2>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>Hye-Tech Network & Solutions</p>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>April 2022 – May 2023</p>
+            <ul style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>
               <li>Developed and deployed full-stack solutions in ASP.NET and Azure, focusing on landing pages for software products</li>
               <li>Collaborated in a DevOps Agile environment, integrating CRM and Quoting Software via Azure Functions to streamline the sales process</li>
             </ul>
@@ -544,21 +583,21 @@ const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }
   );
 };
 
-const Education = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) => {
+const Education = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMobile }) => {
   return (
     <section className="section" id="education">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Education</h2>
+        <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', fontSize: isMobile ? '28px' : '48px' }}>Education</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('edu1')}>
-            <h3>M.S. in Artificial Intelligence in Business</h3>
-            <p>W. P. Carey School of Business at Arizona State University</p>
-            <p>August 2024 - May 2025</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>M.S. in Artificial Intelligence in Business</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>W. P. Carey School of Business at Arizona State University</p>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>August 2024 - May 2025</p>
           </div>
           <div className="tile" onClick={() => setExpandedTile('edu2')}>
-            <h3>B.S. in Industrial Engineering</h3>
-            <p>Ira A Fulton School of Engineering at Arizona State University</p>
-            <p>August 2019 - December 2021</p>
+            <h3 style={{ fontSize: isMobile ? '20px' : '24px' }}>B.S. in Industrial Engineering</h3>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>Ira A Fulton School of Engineering at Arizona State University</p>
+            <p style={{ fontSize: isMobile ? '14px' : '18px' }}>August 2019 - December 2021</p>
           </div>
         </div>
       </div>
@@ -566,6 +605,11 @@ const Education = ({ isActive, expandedTile, setExpandedTile, expandedTileRef })
         <div className="expanded-tile">
           <div className="expanded-content" ref={expandedTileRef}>
             <span className="close-btn" onClick={() => setExpandedTile(null)}>✕</span>
+            <h2 style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '24px' : '32px' }}>M.S. in Artificial Intelligence in Business</h2>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>W. P. Carey School of Business at Arizona State University</p>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>August 2024 - May 2025</p>
+            <p style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '14px' : '18px' }}>GPA: 4.0</p>
+            <h3 style={{ color: 'black', fontWeight: 'bold', fontSize: isMobile ? '18px' : '24px' }}>Relevant Coursework:</h3>
             <h2 style={{ color: 'black', fontWeight: 'bold' }}>M.S. in Artificial Intelligence in Business</h2>
             <p style={{ color: 'black', fontWeight: 'bold' }}>W. P. Carey School of Business at Arizona State University</p>
             <p style={{ color: 'black', fontWeight: 'bold' }}>August 2024 - May 2025</p>
