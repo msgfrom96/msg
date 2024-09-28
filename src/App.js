@@ -388,8 +388,7 @@ const Header = ({ titlePosition, isMobile }) => {
             fontWeight: 'bold', 
             whiteSpace: 'nowrap',
             display: 'inline-block',
-            animation: 'scroll-left 120s linear infinite',
-            transform: `translateX(${-titlePosition}px)`,
+            animation: 'scroll-left 60s linear infinite',
             fontSize: isMobile ? '14px' : '24px'
           }}>
             {repeatedText}
@@ -398,12 +397,16 @@ const Header = ({ titlePosition, isMobile }) => {
       </div>
       <style jsx>{`
         @keyframes scroll-left {
-          0% { transform: translateX(100%); }
+          0% { transform: translateX(0); }
           100% { transform: translateX(-100%); }
         }
         .scrolling-header {
           overflow: hidden;
           width: 100%;
+        }
+        .logo {
+          display: inline-block;
+          padding-left: 0;
         }
       `}</style>
     </header>
@@ -414,13 +417,7 @@ const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMob
   return (
     <section className="section" id="about">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
-        <div className="tile-container" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
-          <div className="tile" style={{ flex: 1, marginRight: isMobile ? 0 : '20px', marginBottom: isMobile ? '20px' : 0 }}>
-            <h1 style={{ fontSize: isMobile ? '22px' : '36px' }}>About Me</h1>
-            <p style={{ fontSize: isMobile ? '12px' : '16px', padding: '0 10px' }}>I'm Maurice S. Gleiser Gherson, an AI and Software Implementation Engineer with a passion for leveraging technology to drive business transformation. With a background in Industrial Engineering and a focus on AI in Business, I specialize in implementing AI-driven solutions that enhance operational efficiency and drive innovation.</p>
-            <a href="#contact" className="btn" style={{ fontSize: isMobile ? '12px' : '14px' }}>Get in Touch</a>
-          </div>
-          <div className="headshot-container" style={{ flex: isMobile ? 'none' : 1, maxWidth: isMobile ? '200px' : '300px', margin: isMobile ? '0 auto' : '0' }}>
+      <div className="headshot-container" style={{ flex: isMobile ? 'none' : 1, maxWidth: isMobile ? '200px' : '300px', margin: isMobile ? '0 auto' : '0' }}>
             <img
               src={`${process.env.PUBLIC_URL}/img/msghs.png`}
               alt="Maurice S. Gleiser Gherson"
@@ -435,6 +432,20 @@ const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMob
               }}
             />
           </div>
+          <br></br>
+          <br></br>
+
+        <div className="tile-container" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
+          <div className="tile" style={{ flex: 1, marginRight: isMobile ? 0 : '20px', marginBottom: isMobile ? '20px' : 0 }}>
+            <h1 style={{ fontSize: isMobile ? '22px' : '36px' }}>About Me</h1>
+            <p style={{ fontSize: isMobile ? '12px' : '16px', padding: '0 10px', textAlign: 'justify' }}>
+              I'm Maurice S. Gleiser Gherson, an AI and Software Implementation Engineer with a passion for leveraging technology to drive business transformation.
+              <br /><br />
+              With a background in Industrial Engineering and a focus on AI in Business, I specialize in implementing AI-driven solutions that enhance operational efficiency and drive innovation.
+            </p>
+            <br></br>
+            <a href="#contact" className="btn" style={{ fontSize: isMobile ? '12px' : '14px' }}>Get in Touch</a>
+          </div>
         </div>
       </div>
     </section>
@@ -442,6 +453,12 @@ const About = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMob
 };
 
 const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMobile }) => {
+  const Separator = () => (
+    <span style={{ display: 'inline-flex', alignItems: 'center', margin: '0 5px', fontSize: '10px', verticalAlign: 'middle' }}>
+      ●
+    </span>
+  );
+
   return (
     <section className="section" id="skills">
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
@@ -449,15 +466,21 @@ const Skills = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, isMo
         <div className="tile-container">
           <div className="tile">
             <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Programming Languages</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>C#, JSON, JavaScript, Python, R, SQL</p>
+            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>
+              C# <Separator /> JSON <Separator /> JavaScript <Separator /> Python <Separator /> R <Separator /> SQL
+            </p>
           </div>
           <div className="tile">
             <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Technologies</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>GraphQL, APIs, .NET, Azure DevOps, Jira</p>
+            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>
+              GraphQL <Separator /> APIs <Separator /> .NET <Separator /> Azure DevOps <Separator /> Jira
+            </p>
           </div>
           <div className="tile">
             <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Tools</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>Microsoft Office, CLI, Tableau, Adobe Suite</p>
+            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>
+              Microsoft Office <Separator /> CLI <Separator /> Tableau <Separator /> Adobe Suite
+            </p>
           </div>
           <div className="tile">
             <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Certifications</h3>
@@ -476,12 +499,12 @@ const Projects = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, is
         <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', fontSize: isMobile ? '22px' : '36px' }}>Projects</h2>
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('project1')}>
-            <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Systems Design Capstone Project</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>Norson Alimentos - Efficiency Improvement</p>
+            <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>NORSON</h3>
+            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>Systems Design Capstone Project</p>
           </div>
           <div className="tile" onClick={() => setExpandedTile('project2')}>
-            <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>TAMID Consulting Group</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>GenAI Start-up Consulting and Finance Portfolio Competition</p>
+            <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}><strong>TAMID</strong></h3>
+            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>GenAI Consulting, Finance Portfolio Competition</p>
           </div>
         </div>
       </div>
@@ -525,12 +548,12 @@ const Experience = ({ isActive, expandedTile, setExpandedTile, expandedTileRef, 
         <div className="tile-container">
           <div className="tile" onClick={() => setExpandedTile('exp1')}>
             <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Software Implementation Engineer & Manager</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>Siemens Industry Inc. (for Senseye Predictive Maintenance)</p>
+            <p style={{ fontSize: isMobile ? '12px' : '16px', fontWeight: 'bold' }}>SIEMENS</p>
             <p style={{ fontSize: isMobile ? '12px' : '16px' }}>May 2023 – July 2024</p>
           </div>
           <div className="tile" onClick={() => setExpandedTile('exp2')}>
             <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>Software Analyst</h3>
-            <p style={{ fontSize: isMobile ? '12px' : '16px' }}>Hye-Tech Network & Solutions</p>
+            <p style={{ fontSize: isMobile ? '12px' : '16px', fontWeight: 'bold' }}>HYE-TECH</p>
             <p style={{ fontSize: isMobile ? '12px' : '16px' }}>April 2022 – May 2023</p>
           </div>
         </div>
@@ -640,7 +663,7 @@ const Contact = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) =
       <div className={`container content-wrapper ${isActive ? 'visible' : ''}`}>
         <h2 style={{ color: 'black', fontWeight: 'bold', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>Contact Me</h2>
         <br>
-        </br><p style={{ color: 'black', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
+        </br><p style={{ color: 'black', background: 'var(--secondary-color)', padding: '10px 20px', display: 'inline-block', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', fontWeight: 'bold' }}>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
         <div className="tile-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gridTemplateRows: 'repeat(3, auto)', gap: '15px' }}>
           <div className="tile" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h3 onClick={() => window.location.href = 'mailto:gleiser2@hotmail.com'} style={{ cursor: 'pointer' }}>Email</h3>
@@ -649,12 +672,12 @@ const Contact = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) =
             <h3 onClick={() => window.location.href = 'tel:+17862460623'} style={{ cursor: 'pointer' }}>Phone</h3>
           </div>
           <div className="tile" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-            <h3>Tempe, AZ</h3>
+            <h3 onClick={() => window.open("https://www.google.com/maps?q=Tempe,+AZ", "_blank")} style={{ cursor: 'pointer' }}>Tempe, AZ</h3>
           </div>
           <div className="tile" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h3 onClick={() => window.open("https://www.linkedin.com/in/maurice-gleiser", "_blank")}>LinkedIn</h3>
           </div>
-          <div className="tile" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }} onClick={() => {
+          <div className="tile" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', gridColumn: '1 / span 2' }} onClick={() => {
             const link = document.createElement('a');
             link.href = `${process.env.PUBLIC_URL}/maurice_gleiser.vcf`;
             link.download = 'maurice_gleiser.vcf';
@@ -663,9 +686,6 @@ const Contact = ({ isActive, expandedTile, setExpandedTile, expandedTileRef }) =
             document.body.removeChild(link);
           }}>
             <h3>eCard</h3>
-          </div>
-          <div className="tile" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            {/* Empty tile to maintain 2x3 grid */}
           </div>
         </div>
       </div>
